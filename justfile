@@ -13,15 +13,15 @@ TXT_OK := " [OK]"
     util/bindgen.sh
     echo -n "{{TXT_OK}}"
 
-build:
+@build:
     make clean
     cargo build
     make all
 
-upload: build
+@upload: build
     make upload
 
-upload-screen: upload
+@open: upload
     screen /dev/ttyACM1 115200
 
 rustup:

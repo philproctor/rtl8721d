@@ -7,6 +7,7 @@
 #![allow(unused_attributes)]
 #![feature(custom_test_frameworks)]
 #![test_runner(crate::test_harness::runner)]
+#![feature(const_raw_ptr_deref)]
 // #![reexport_test_harness_main = "test_main"]
 
 extern crate alloc;
@@ -23,7 +24,10 @@ mod test_harness;
 #[cfg(not(test))]
 mod hw;
 
+pub mod config;
 pub mod ffi;
+pub mod futures;
+pub mod net;
 pub mod prelude;
 
 mod error;
@@ -39,9 +43,10 @@ use tasks::*;
 pub extern "C" fn main() -> ! {
     unsafe {
         Executor::init();
-        hal::init();
+        SERIAL1.init();
+        STORAGE.init();
     }
-    hal::SERIAL1.tx_string("Starting system...");
+    info!("System initialized!");
     RTOS::spawn(device_executor, "Executor", 2048, 3);
     Executor::spawn(command_prompt());
     RTOS::start();

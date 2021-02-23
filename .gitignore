@@ -1,5 +1,7 @@
 Cargo.lock
 target/
-/.vscode/settings.json
 tools/
 build_info.h
+
+/.vscode/settings.json
+.gdbinit

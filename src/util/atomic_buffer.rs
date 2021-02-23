@@ -46,7 +46,7 @@ impl<T, const SIZE: usize> AtomicBuffer<T, SIZE> {
         }
 
         self.read_cursor
-                .store(self.advance(read), Ordering::Relaxed);
+            .store(self.advance(read), Ordering::Relaxed);
 
         let p = unsafe { &*self.data.get() };
         Some(p[read])

@@ -8,7 +8,6 @@ u8 *__psram_bss_start__;
 u8 *__psram_bss_end__;
 #endif
 
-void app_init_psram(void);
 void app_captouch_init(void);
 void app_keyscan_init(u8 reset_status);
 
@@ -203,19 +202,3 @@ VOID app_shared_btmem(u32 NewStatus)
 
     HAL_WRITE32(SYSTEM_CTRL_BASE_HP, REG_HS_PLATFORM_PARA, temp);
 }
-
-// int main(void)
-// {
-//     // InterruptRegister(IPC_INTHandler, IPC_IRQ, (u32)IPCM0_DEV, 10);
-//     // InterruptEn(IPC_IRQ, 10);
-//     // app_mbedtls_rom_init();
-//     // ipc_table_init();
-//     // rtw_efuse_boot_write();
-//     // wlan_network();
-
-//     // app_start_autoicg();
-//     // app_pmu_init();
-//     // app_init_psram();
-//     xTaskCreate((TaskFunction_t)device_executor, "device_executor", 1024 * 2, (void *)NULL, (tskIDLE_PRIORITY + 3), NULL);
-//     vTaskStartScheduler();
-// }

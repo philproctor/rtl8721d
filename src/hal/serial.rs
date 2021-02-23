@@ -2,10 +2,6 @@ use crate::ffi::*;
 use crate::prelude::*;
 use core::cell::UnsafeCell;
 
-pub unsafe fn init() {
-    SERIAL1.init();
-}
-
 pub static SERIAL1: SerialPort<
     { c::PinName_PA_7 },
     { c::PinName_PA_8 },
