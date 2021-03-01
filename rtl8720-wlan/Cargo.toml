@@ -1,0 +1,12 @@
+[package]
+name = "rtl8720-wlan"
+version = "0.1.0"
+authors = ["Phil Proctor <philliptproctor@gmail.com>"]
+edition = "2018"
+workspace = "../"
+
+[dependencies]
+rtl8720-sys = { path = "../rtl8720-sys" }
+num = { version = "0.3", default-features = false }
+num-derive = "0.3"
+num-traits = { version = "0.2", default-features = false }

@@ -9,35 +9,16 @@ BIN_NAME = rtl8721d
 RUST_TRIPLE = thumbv8m.main-none-eabihf
 UPLOAD_PORT = /dev/ttyACM1
 
-# Ansi codes
-ANSI_END          = \033[0m
-ANSI_BLACK        = \033[0;30m
-ANSI_DARK_GRAY    = \033[1;30m
-ANSI_RED          = \033[0;31m
-ANSI_LIGHT_RED    = \033[1;31m
-ANSI_GREEN        = \033[0;32m
-ANSI_LIGHT_GREEN  = \033[1;32m
-ANSI_ORANGE       = \033[0;33m
-ANSI_YELLOW       = \033[1;33m
-ANSI_BLUE         = \033[0;34m
-ANSI_LIGHT_BLUE   = \033[1;34m
-ANSI_PURPLE       = \033[0;35m
-ANSI_LIGHT_PURPLE = \033[1;35m
-ANSI_CYAN         = \033[0;36m
-ANSI_LIGHT_CYAN   = \033[1;36m
-ANSI_LIGHT_GRAY   = \033[0;37m
-ANSI_WHITE        = \033[1;37m
-
 # Pass/Fail Text
-TXT_OK   = " [$(ANSI_GREEN)OK$(ANSI_END)]"
-TXT_FAIL = " [$(ANSI_RED)FAIL$(ANSI_END)]"
+TXT_OK   = " [  OK  ]"
+TXT_FAIL = " [ FAIL ]"
 
 # Arduino tools
-TOOL_ROOT = target/tools
-TOOLCHAIN_ROOT = target/toolchain
+TOOL_ROOT = tools/bin
+TOOLCHAIN_ROOT = tools/toolchain
 
 # SDK
-SDK_ROOT = target/sdk
+SDK_ROOT = tools/sdk
 SDK_PATH = $(SDK_ROOT)/hardware/system/libameba/sdk
 SDK_A_PATH = $(SDK_ROOT)/hardware/variants/rtl8721d
 SDK_A_FILES = $(wildcard $(SDK_A_PATH)/*.a)
@@ -65,56 +46,17 @@ AMEBA_UPLOAD_TOOL = $(realpath $(AMEBA_TOOLDIR)/image_tool/amebad_image_tool)
 
 # Files...
 # These includes derived from the arduino platform.txt ...
-INCLUDES =  -Ic/inc \
-			-I$(SDK_PATH)/component/os/freertos \
-			-I$(SDK_PATH)/component/os/freertos/freertos_v10.2.0/Source/include \
-			-I$(SDK_PATH)/component/os/freertos/freertos_v10.2.0/Source/portable/GCC/ARM_CM33/non_secure \
-			-I$(SDK_PATH)/component/os/os_dep/include \
-			-I$(SDK_PATH)/component/soc/realtek/amebad/misc \
-			-I$(SDK_PATH)/component/common/api/network/include \
+INCLUDES =  -Irtl8720-sys/c/inc \
 			-I$(SDK_PATH)/component/common/api \
 			-I$(SDK_PATH)/component/common/api/at_cmd \
+			-I$(SDK_PATH)/component/common/api/network/include \
 			-I$(SDK_PATH)/component/common/api/platform \
 			-I$(SDK_PATH)/component/common/api/wifi \
 			-I$(SDK_PATH)/component/common/api/wifi/rtw_wpa_supplicant/src \
 			-I$(SDK_PATH)/component/common/api/wifi/rtw_wpa_supplicant/src/crypto \
 			-I$(SDK_PATH)/component/common/application \
-			-I$(SDK_PATH)/component/common/media/framework \
-			-I$(SDK_PATH)/component/common/example \
-			-I$(SDK_PATH)/component/common/example/wlan_fast_connect \
-			-I$(SDK_PATH)/component/common/mbed/api \
-			-I$(SDK_PATH)/component/common/mbed/hal \
-			-I$(SDK_PATH)/component/common/mbed/hal_ext \
-			-I$(SDK_PATH)/component/common/mbed/targets/hal/rtl8721d \
-			-I$(SDK_PATH)/component/common/network \
-			-I$(SDK_PATH)/component/common/network/lwip/lwip_v2.0.2/port/realtek/freertos \
-			-I$(SDK_PATH)/component/common/network/lwip/lwip_v2.0.2/src/include \
-			-I$(SDK_PATH)/component/common/network/lwip/lwip_v2.0.2/src/include/lwip \
-			-I$(SDK_PATH)/component/common/network/lwip/lwip_v2.0.2/port/realtek \
-			-I$(SDK_PATH)/component/common/test \
-			-I$(SDK_PATH)/component/soc/realtek/amebad/cmsis \
-			-I$(SDK_PATH)/component/soc/realtek/amebad/fwlib \
-			-I$(SDK_PATH)/component/soc/realtek/amebad/misc \
-			-I$(SDK_PATH)/component/common/drivers/wlan/realtek/include \
-			-I$(SDK_PATH)/component/common/drivers/wlan/realtek/src/osdep \
-			-I$(SDK_PATH)/component/common/drivers/wlan/realtek/src/hci \
-			-I$(SDK_PATH)/component/common/network/ssl/ssl_ram_map/rom \
-			-I$(SDK_PATH)/component/common/utilities \
-			-I$(SDK_PATH)/component/common/video/v4l2/inc \
-			-I$(SDK_PATH)/component/common/media/rtp_codec \
-			-I$(SDK_PATH)/component/common/file_system/fatfs \
-			-I$(SDK_PATH)/component/common/file_system/fatfs/r0.10c/include \
-			-I$(SDK_PATH)/component/common/file_system/ftl \
-			-I$(SDK_PATH)/component/common/drivers/sdio/realtek/sdio_host/inc \
-			-I$(SDK_PATH)/component/common/audio \
-			-I$(SDK_PATH)/component/common/drivers/i2s \
 			-I$(SDK_PATH)/component/common/application/xmodem \
-			-I$(SDK_PATH)/component/common/network/mDNS \
-			-I$(SDK_PATH)/component/soc/realtek/amebad/fwlib/include \
-			-I$(SDK_PATH)/component/soc/realtek/amebad/swlib/string \
-			-I$(SDK_PATH)/component/soc/realtek/amebad/app/monitor/include \
-			-I$(SDK_PATH)/component/soc/realtek/amebad/app/xmodem \
-			-I$(SDK_PATH)/component/common/network/ssl/mbedtls-2.4.0/include \
+			-I$(SDK_PATH)/component/common/audio \
 			-I$(SDK_PATH)/component/common/bluetooth/realtek/sdk/board/amebad/lib \
 			-I$(SDK_PATH)/component/common/bluetooth/realtek/sdk/board/amebad/src \
 			-I$(SDK_PATH)/component/common/bluetooth/realtek/sdk/board/amebad/src/vendor_cmd \
@@ -130,16 +72,53 @@ INCLUDES =  -Ic/inc \
 			-I$(SDK_PATH)/component/common/bluetooth/realtek/sdk/inc/stack \
 			-I$(SDK_PATH)/component/common/bluetooth/realtek/sdk/src/app/ble_central_client \
 			-I$(SDK_PATH)/component/common/bluetooth/realtek/sdk/src/mcu/module/data_uart_cmd \
+			-I$(SDK_PATH)/component/common/drivers/i2s \
 			-I$(SDK_PATH)/component/common/drivers/ir/protocol \
+			-I$(SDK_PATH)/component/common/drivers/sdio/realtek/sdio_host/inc \
+			-I$(SDK_PATH)/component/common/drivers/wlan/realtek/include \
 			-I$(SDK_PATH)/component/common/drivers/wlan/realtek/src/core/option \
 			-I$(SDK_PATH)/component/common/drivers/wlan/realtek/src/hal \
 			-I$(SDK_PATH)/component/common/drivers/wlan/realtek/src/hal/phydm \
-			-I$(SDK_PATH)/component/common/network/ssl/mbedtls-2.4.0/include
+			-I$(SDK_PATH)/component/common/drivers/wlan/realtek/src/hci \
+			-I$(SDK_PATH)/component/common/drivers/wlan/realtek/src/osdep \
+			-I$(SDK_PATH)/component/common/example \
+			-I$(SDK_PATH)/component/common/example/wlan_fast_connect \
+			-I$(SDK_PATH)/component/common/file_system/fatfs \
+			-I$(SDK_PATH)/component/common/file_system/fatfs/r0.10c/include \
+			-I$(SDK_PATH)/component/common/file_system/ftl \
+			-I$(SDK_PATH)/component/common/mbed/api \
+			-I$(SDK_PATH)/component/common/mbed/hal \
+			-I$(SDK_PATH)/component/common/mbed/hal_ext \
+			-I$(SDK_PATH)/component/common/mbed/targets/hal/rtl8721d \
+			-I$(SDK_PATH)/component/common/media/framework \
+			-I$(SDK_PATH)/component/common/media/rtp_codec \
+			-I$(SDK_PATH)/component/common/network \
+			-I$(SDK_PATH)/component/common/network/lwip/lwip_v2.0.2/port/realtek \
+			-I$(SDK_PATH)/component/common/network/lwip/lwip_v2.0.2/port/realtek/freertos \
+			-I$(SDK_PATH)/component/common/network/lwip/lwip_v2.0.2/src/include \
+			-I$(SDK_PATH)/component/common/network/lwip/lwip_v2.0.2/src/include/lwip \
+			-I$(SDK_PATH)/component/common/network/mDNS \
+			-I$(SDK_PATH)/component/common/network/ssl/mbedtls-2.4.0/include \
+			-I$(SDK_PATH)/component/common/network/ssl/ssl_ram_map/rom \
+			-I$(SDK_PATH)/component/common/test \
+			-I$(SDK_PATH)/component/common/utilities \
+			-I$(SDK_PATH)/component/common/video/v4l2/inc \
+			-I$(SDK_PATH)/component/os/freertos \
+			-I$(SDK_PATH)/component/os/freertos/freertos_v10.2.0/Source/include \
+			-I$(SDK_PATH)/component/os/freertos/freertos_v10.2.0/Source/portable/GCC/ARM_CM33/non_secure \
+			-I$(SDK_PATH)/component/os/os_dep/include \
+			-I$(SDK_PATH)/component/soc/realtek/amebad/app/monitor/include \
+			-I$(SDK_PATH)/component/soc/realtek/amebad/app/xmodem \
+			-I$(SDK_PATH)/component/soc/realtek/amebad/cmsis \
+			-I$(SDK_PATH)/component/soc/realtek/amebad/fwlib \
+			-I$(SDK_PATH)/component/soc/realtek/amebad/fwlib/include \
+			-I$(SDK_PATH)/component/soc/realtek/amebad/misc \
+			-I$(SDK_PATH)/component/soc/realtek/amebad/swlib/string
 
-SRCS = $(wildcard c/src/*.c)
+SRCS = $(wildcard rtl8720-sys/c/src/*.c)
 
 # Output
-BUILD_INFO_FILE = c/inc/build_info.h
+BUILD_INFO_FILE = rtl8720-sys/c/inc/build_info.h
 TARGET = target/rtl8721d
 OBJ_DIR = $(TARGET)/obj
 OUT_DIR = $(TARGET)/bin

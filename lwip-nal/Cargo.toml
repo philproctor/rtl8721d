@@ -1,0 +1,20 @@
+[package]
+name = "lwip-nal"
+version = "0.1.0"
+authors = ["Phil Proctor <philliptproctor@gmail.com>"]
+edition = "2018"
+workspace = "../"
+
+[dependencies]
+embedded-nal = "0.3"
+no-std-net = "0.5"
+nb = "1.0"
+heapless = "0.6"
+cstr_core = "0.2"
+
+num = { version = "0.3", default-features = false }
+num-derive = "0.3"
+num-traits = { version = "0.2", default-features = false }
+
+# Using this for now but should be changed to be agnostic
+rtl8720-sys = { path = "../rtl8720-sys" }

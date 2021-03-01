@@ -1,0 +1,27 @@
+[package]
+name = "rust8720"
+version = "0.1.0"
+authors = ["phil"]
+edition = "2018"
+workspace = "../"
+
+[dependencies]
+rtl8720-sys = { path = "../rtl8720-sys" }
+rtl8720-wlan = { path = "../rtl8720-wlan" }
+
+futures-lite = { version = "1.11", default-features = false, features = ["alloc"] }
+spin_on = "0.1"
+num = { version = "0.3", default-features = false }
+num-derive = "0.3"
+num-traits = { version = "0.2", default-features = false }
+async-trait = "0.1"
+httparse = { version = "1.3", default-features = false }
+cstr_core = "0.2"
+
+[dev-dependencies]
+cortex-m = "0.7"
+cortex-m-rt = "0.6"
+cortex-m-semihosting = "0.3"
+
+[lib]
+crate-type = ["staticlib"]

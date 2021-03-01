@@ -1,13 +1,13 @@
 [build]
 target = "thumbv8m.main-none-eabihf"
 
-[profile.dev]
-panic = "abort"
+# [profile.dev]
+# panic = "abort"
 
-[profile.release]
-panic = "abort"
-codegen-units = 1
-lto = true
+# [profile.release]
+# panic = "abort"
+# codegen-units = 1
+# lto = true
 
 # [target.thumbv8m.main-none-eabihf]
 # runner = "qemu-system-arm -cpu cortex-m4 -machine lm3s6965evb -nographic -semihosting-config enable=on,target=native -kernel"
