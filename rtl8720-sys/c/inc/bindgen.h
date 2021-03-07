@@ -12,6 +12,7 @@ extern int __builtin_arm_cmse_nonsecure_caller();
 #include <spi_api.h>
 #include <sys_api.h>
 #include <flash_api.h>
+#include <timer_api.h>
 #include <device_lock.h>
 
 #include <portmacro.h>

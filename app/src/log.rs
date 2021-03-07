@@ -1,6 +1,5 @@
 macro_rules! info {
     ($( $content:tt )*) => {{
-        use crate::hal::SERIAL1;
         use alloc::format;
         let mut msg = format!($( $content )*);
         msg = format!("[INFO]: {}", msg);
@@ -11,9 +10,9 @@ macro_rules! info {
 #[allow(unused_macros)]
 macro_rules! debug {
     ($( $content:tt )*) => {{
-        use crate::hal::SERIAL1;
+        use alloc::format;
         let mut msg = format!($( $content )*);
-        msg = format!("[DBG ]: {}", msg);
+        msg = format!("[DEBG]: {}", msg);
         SERIAL1.tx_string(&msg);
     }}
 }
@@ -21,7 +20,7 @@ macro_rules! debug {
 #[allow(unused_macros)]
 macro_rules! warn {
     ($( $content:tt )*) => {{
-        use crate::hal::SERIAL1;
+        use alloc::format;
         let mut msg = format!($( $content )*);
         msg = format!("[WARN]: {}", msg);
         SERIAL1.tx_string(&msg);
@@ -31,7 +30,7 @@ macro_rules! warn {
 #[allow(unused_macros)]
 macro_rules! crit {
     ($( $content:tt )*) => {{
-        use crate::hal::SERIAL1;
+        use alloc::format;
         let mut msg = format!($( $content )*);
         msg = format!("[CRIT]: {}", msg);
         SERIAL1.tx_string(&msg);

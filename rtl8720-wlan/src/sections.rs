@@ -57,7 +57,7 @@ pub struct RTLWifiMutex {
 
 impl RTLWifiMutex {
     pub fn enter() -> Result<Self> {
-        unsafe { sys::c::device_mutex_lock(sys::c::_RT_DEV_LOCK_E_RT_DEV_LOCK_WLAN) };
+        unsafe { sys::c::device_mutex_lock(sys::c::RT_DEV_LOCK_WLAN) };
         Ok(Self {
             phantom: core::marker::PhantomData::<()>,
         })
@@ -68,6 +68,6 @@ impl RTLWifiMutex {
 
 impl Drop for RTLWifiMutex {
     fn drop(&mut self) {
-        unsafe { sys::c::device_mutex_unlock(sys::c::_RT_DEV_LOCK_E_RT_DEV_LOCK_WLAN) };
+        unsafe { sys::c::device_mutex_unlock(sys::c::RT_DEV_LOCK_WLAN) };
     }
 }

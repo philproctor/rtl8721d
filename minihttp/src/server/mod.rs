@@ -15,12 +15,12 @@ impl<T: ClientStack + ServerStack> Http<T> {
     ) -> Result<(), HttpError<<T as TcpClientStack>::Error>> {
         let mut s = self.stack.clone();
         let mut sock = s.socket()?;
-        s.bind(&mut sock, 2000)?;
+        s.bind(&mut sock, 8080)?;
         s.listen(&mut sock)?;
         loop {
             let (mut c_sock, _) = yield_nb!(s.accept(&mut sock))?;
             let mut request_stream = IncomingRequest::new();
-            let mut inbuf = [0u8; 32];
+            let mut inbuf = [0u8; 16];
             while !request_stream
                 .read_from_stream(&mut s, &mut c_sock, &mut inbuf)
                 .await?

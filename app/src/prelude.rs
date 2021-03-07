@@ -1,10 +1,17 @@
 pub use crate::error::*;
 pub use crate::executor::Executor;
-pub use crate::futures::*;
 pub use crate::hal::*;
-pub use crate::net::*;
 pub use crate::util::*;
 pub use num::FromPrimitive;
+
+pub use heapless::{self, consts};
+
+pub use cstr_core::{CStr, CString};
+
+pub use lwip_nal::*;
+pub use rtl8720_sys::c;
+pub use rtl8720_sys::ctypes::*;
+pub use rtl8720_wlan::*;
 
 pub use futures_lite::{
     prelude::*,
@@ -15,3 +22,5 @@ pub use futures_lite::{
 };
 
 pub use alloc::{boxed::Box, format, string::String, vec, vec::Vec};
+
+pub use crate::device::*;

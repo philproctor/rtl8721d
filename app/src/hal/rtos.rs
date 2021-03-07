@@ -1,18 +1,4 @@
-use crate::ffi::ctypes::*;
 use crate::prelude::*;
-use core::alloc::{GlobalAlloc, Layout};
-
-pub struct RtosAllocator;
-
-unsafe impl GlobalAlloc for RtosAllocator {
-    unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
-        RTOS::alloc(layout)
-    }
-
-    unsafe fn dealloc(&self, ptr: *mut u8, layout: Layout) {
-        RTOS::dealloc(ptr, layout)
-    }
-}
 
 pub struct RTOS;
 
@@ -31,15 +17,6 @@ impl RTOS {
         unsafe { c::xTaskGetTickCount() } // ticks == ms on this system, but this should be done in a more portable way
     }
 
-    pub unsafe fn alloc(layout: Layout) -> *mut u8 {
-        let res = c::pvPortMalloc(layout.size() as u32);
-        return res as *mut u8;
-    }
-
-    pub unsafe fn dealloc(ptr: *mut u8, _layout: Layout) {
-        c::vPortFree(ptr as *mut c_void);
-    }
-
     pub fn start() -> ! {
         unsafe {
             c::vTaskStartScheduler();
@@ -49,13 +26,13 @@ impl RTOS {
 
     pub fn spawn(f: extern "C" fn(), name: &'static str, stack_size: u16, priority: u32) {
         let ptr = f as *const ();
-        let cstr = CString::new(name);
+        let cstr = CString::new(name).unwrap_or_default();
         unsafe {
             let f_ptr =
                 core::mem::transmute::<*const (), unsafe extern "C" fn(arg1: *mut c_void)>(ptr);
             c::xTaskCreate(
                 Some(f_ptr),
-                cstr.ptr(),
+                cstr.as_ptr(),
                 stack_size,
                 &mut *core::ptr::null_mut(),
                 priority,

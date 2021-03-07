@@ -17,6 +17,7 @@ TXT_OK := " [OK]"
     make clean
     cargo build
     make all
+    du -h target/rtl8721d/bin/km0_km4_image2.bin
 
 @upload: build
     make upload

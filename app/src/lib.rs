@@ -8,25 +8,20 @@
 #![feature(custom_test_frameworks)]
 #![test_runner(crate::test_harness::runner)]
 #![feature(const_raw_ptr_deref)]
+#![feature(const_fn_fn_ptr_basics)]
 // #![reexport_test_harness_main = "test_main"]
 
 extern crate alloc;
 
-#[macro_use]
-extern crate num_derive;
+// #[macro_use]
+// extern crate num_derive;
 
 #[macro_use]
 mod log;
 
-#[cfg(test)]
-mod test_harness;
-
-#[cfg(not(test))]
-mod hw;
+pub mod device;
 
 pub mod config;
-pub mod futures;
-pub mod net;
 pub mod prelude;
 
 mod error;
@@ -43,18 +38,32 @@ use tasks::*;
 #[no_mangle]
 pub extern "C" fn main() -> ! {
     unsafe {
-        Executor::init();
         SERIAL1.init();
         STORAGE.init();
+        TIMER1.init();
     }
     info!("System initialized!");
-    RTOS::spawn(device_executor, "Executor", 2048, 3);
-    spawn!(command_prompt());
-    // RTOS::spawn(tasks::debug_rxtx, "rxtx", 2048, 3);
+    RTOS::spawn(device_executor, "Executor", 1024 * 4, 3);
     RTOS::start();
 }
 
 #[no_mangle]
 pub extern "C" fn device_executor() {
+    startup();
     Executor::run();
+}
+
+fn startup() {
+    spawn!(command_prompt());
+    LwipInterface::init(Some(debug_fn));
+    WifiClient::init().unwrap_or_default();
+    WifiClient::connect_wpa2("test", "test").unwrap();
+    LwipInterface::dhcp(0);
+    spawn!(http_server());
+    spawn!(debug_task());
+    TIMER1.start_periodical(100); //the fn on this is effectively a no-op, but it helps keep the main loop going
+}
+
+fn debug_fn(s: &str) {
+    SERIAL1.tx_string(s);
 }

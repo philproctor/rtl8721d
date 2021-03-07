@@ -3,7 +3,7 @@ use core::alloc::Layout;
 use core::panic::PanicInfo;
 
 #[global_allocator]
-static ALLOCATOR: RtosAllocator = RtosAllocator;
+static ALLOCATOR: SystemAllocator = SystemAllocator;
 
 #[lang = "eh_personality"]
 extern "C" fn eh_personality() -> ! {
@@ -12,7 +12,9 @@ extern "C" fn eh_personality() -> ! {
 
 #[cfg(not(test))]
 #[panic_handler]
-fn panic(_: &PanicInfo) -> ! {
+fn panic(pi: &PanicInfo) -> ! {
+    crit!("PANIC!!! {:?}", pi);
+    System::sleep(5000);
     System::reset();
 }
 

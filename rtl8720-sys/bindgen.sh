@@ -5,8 +5,16 @@ bindgen \
     --use-core \
     --with-derive-default \
     --impl-debug \
+    --whitelist-function '(serial_|rtl_|rltk_|wifi_|wext_|sys_|device|init|Psram_|app_|flash_|FLASH_|gtimer_).*' \
+    --whitelist-function '.*(Port|Task|Queue).*' \
+    --whitelist-var '(RTW|rtw|RT|rt)_.*' \
+    --whitelist-type '(RTW|rtw|RT|rt|_RT|ip_|ip4)_.*' \
+    --whitelist-var 'DISABLE' \
     --no-doc-comments \
     --no-layout-tests \
+    --no-prepend-enum-name \
+    --fit-macro-constant-types \
+    --size_t-is-usize \
     --generate-block \
     --default-enum-style "consts" \
     --ctypes-prefix "crate::ctypes" \
