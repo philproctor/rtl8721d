@@ -77,8 +77,9 @@ impl<const START: u32, const END: u32> StorageApi<START, END> {
         if (address + size as u32) > END {
             return Err(SystemError::OutOfRange);
         }
-        unsafe { c::FLASH_Write_Unlock() };
+        // unsafe { c::FLASH_Write_Unlock() };
         unsafe {
+            c::flash_erase_sector(&mut (*self.handle.get()).unwrap(), self.addr(address));
             if c::flash_stream_write(
                 &mut (*self.handle.get()).unwrap(),
                 self.addr(address),

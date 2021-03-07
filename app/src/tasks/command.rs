@@ -64,6 +64,27 @@ async fn run_command(cmd: &str) -> String {
             let free = unsafe { crate::ffi::c::Psram_reserve_free_size() };
             format!("Free memory: {}", free)
         }
+        "config load" => {
+            CONFIG.load().unwrap_or_default();
+            format!(
+                "SSID selected: {} WifiMode: {:?} Password: {}",
+                CONFIG.get_ssid(),
+                CONFIG.get_wifi_mode(),
+                CONFIG.get_password()
+            )
+        }
+        "config save" => {
+            CONFIG.set_wifi_mode(crate::config::WifiMode::WPA2);
+            CONFIG.set_password("TEST".into());
+            CONFIG.set_ssid("TEST".into());
+            CONFIG.save().unwrap_or_default();
+            format!(
+                "SSID selected: {} WifiMode: {:?} Password: {}",
+                CONFIG.get_ssid(),
+                CONFIG.get_wifi_mode(),
+                CONFIG.get_password()
+            )
+        }
         "flash status" => {
             let status = STORAGE.status();
             format!("Flash status: {}", status)
@@ -73,7 +94,7 @@ async fn run_command(cmd: &str) -> String {
             format!("Flash ID: {}:{}:{}", id[0], id[1], id[2])
         }
         "flash read" => {
-            let buf = STORAGE.read(0, 10);
+            let buf = STORAGE.read(0, 100);
             format!("contents: {:?}", buf)
         }
         "flash write" => {

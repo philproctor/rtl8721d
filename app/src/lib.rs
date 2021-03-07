@@ -54,14 +54,15 @@ pub extern "C" fn device_executor() {
 }
 
 fn startup() {
-    spawn!(command_prompt());
+    CONFIG.load().unwrap_or_default();
     LwipInterface::init(Some(debug_fn));
     WifiClient::init().unwrap_or_default();
-    WifiClient::connect_wpa2("test", "test").unwrap();
+    WifiClient::connect_wpa2(CONFIG.get_ssid(), CONFIG.get_password()).unwrap();
     LwipInterface::dhcp(0);
+    TIMER1.start_periodical(100); //the fn on this is effectively a no-op, but it helps keep the main loop going
+    spawn!(command_prompt());
     spawn!(http_server());
     spawn!(debug_task());
-    TIMER1.start_periodical(100); //the fn on this is effectively a no-op, but it helps keep the main loop going
 }
 
 fn debug_fn(s: &str) {
