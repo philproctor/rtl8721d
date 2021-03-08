@@ -12,6 +12,7 @@ pub enum SystemError {
     OutOfRange,
     NotReady,
     Unknown,
+    Invalid(&'static str)
 }
 
 impl From<FromUtf8Error> for SystemError {

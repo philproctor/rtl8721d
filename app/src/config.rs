@@ -2,7 +2,7 @@ use crate::prelude::*;
 use core::cell::UnsafeCell;
 use heapless::String;
 
-pub static CONFIG: Configuration = Configuration::new();
+pub static CONFIG: ConfigContainer = ConfigContainer::new();
 
 #[repr(u8)]
 #[derive(Debug, Clone, Copy)]
@@ -13,73 +13,85 @@ pub enum WifiMode {
 }
 
 #[repr(C)]
-#[derive(Debug)]
-pub struct Configuration {
-    wifi_mode: UnsafeCell<WifiMode>,
-    ssid: UnsafeCell<String<consts::U33>>,
-    password: UnsafeCell<String<consts::U64>>,
+#[derive(Debug, Clone)]
+struct Configuration {
+    wifi_mode: WifiMode,
+    ssid: String<consts::U33>,
+    password: String<consts::U64>,
 }
-
-unsafe impl Send for Configuration {}
-unsafe impl Sync for Configuration {}
-
-const CONFIG_SIZE: usize = core::mem::size_of::<Configuration>();
 
 impl Configuration {
     pub const fn new() -> Self {
         Self {
-            wifi_mode: UnsafeCell::new(WifiMode::Open),
-            ssid: UnsafeCell::new(String(heapless::i::String::new())),
-            password: UnsafeCell::new(String(heapless::i::String::new())),
+            wifi_mode: WifiMode::Open,
+            ssid: String(heapless::i::String::new()),
+            password: String(heapless::i::String::new()),
         }
     }
 
+    pub fn is_valid(&self) -> bool {
+        true
+    }
+}
+
+pub struct ConfigContainer(UnsafeCell<Configuration>);
+
+unsafe impl Send for ConfigContainer {}
+unsafe impl Sync for ConfigContainer {}
+
+impl ConfigContainer {
+    const SIZE: usize = core::mem::size_of::<Configuration>();
+
+    const fn new() -> Self {
+        ConfigContainer(UnsafeCell::new(Configuration::new()))
+    }
+
+    fn inner(&self) -> &mut Configuration {
+        unsafe { &mut *self.0.get() }
+    }
+
     pub fn save(&self) -> core::result::Result<(), crate::error::SystemError> {
-        let cpy = unsafe {
-            Self {
-                wifi_mode: UnsafeCell::new(*self.wifi_mode.get()),
-                ssid: UnsafeCell::new((*self.ssid.get()).clone()),
-                password: UnsafeCell::new((*self.password.get()).clone()),
-            }
-        };
-        let bytes: [u8; CONFIG_SIZE] = unsafe { core::mem::transmute(cpy) };
+        let cpy = self.inner().clone();
+        let bytes: [u8; Self::SIZE] = unsafe { core::mem::transmute(cpy) };
         STORAGE.write(0, &bytes)
     }
 
     pub fn load(&self) -> core::result::Result<(), crate::error::SystemError> {
-        let bytes = STORAGE.read(0, CONFIG_SIZE as u32)?;
-        let mut sb = [0u8; CONFIG_SIZE];
-        sb.copy_from_slice(&bytes[..CONFIG_SIZE]);
+        let bytes = STORAGE.read(0, Self::SIZE as u32)?;
+        let mut sb = [0u8; Self::SIZE];
+        sb.copy_from_slice(&bytes[..Self::SIZE]);
         let cfg: Self = unsafe { core::mem::transmute(sb) };
-        self.set_wifi_mode(cfg.get_wifi_mode());
-        self.set_ssid(cfg.get_ssid().clone());
-        self.set_password(cfg.get_password().clone());
-        Ok(())
+        if cfg.inner().is_valid() {
+            self.set_wifi_mode(cfg.get_wifi_mode());
+            self.set_ssid(cfg.get_ssid().clone());
+            self.set_password(cfg.get_password().clone());
+            Ok(())
+        } else {
+            Err(SystemError::Invalid("Configuration self check failed"))
+        }
     }
 
     pub fn get_wifi_mode(&self) -> WifiMode {
-        unsafe { *self.wifi_mode.get() }
+        self.inner().wifi_mode
     }
 
     pub fn get_ssid(&self) -> &String<consts::U33> {
-        unsafe { &*self.ssid.get() }
+        &self.inner().ssid
     }
 
     pub fn get_password(&self) -> &String<consts::U64> {
-        unsafe { &*self.password.get() }
+        &self.inner().password
     }
 
     pub fn set_wifi_mode(&self, val: WifiMode) {
-        *unsafe { &mut *self.wifi_mode.get() } = val
+        self.inner().wifi_mode = val
     }
 
     pub fn set_ssid(&self, val: String<consts::U33>) {
-        *unsafe { &mut *self.ssid.get() } = unsafe { core::mem::zeroed() };
-        *unsafe { &mut *self.ssid.get() } = val;
+        self.inner().ssid = val
     }
 
     pub fn set_password(&self, val: String<consts::U64>) {
-        *unsafe { &mut *self.password.get() } = unsafe { core::mem::zeroed() };
-        *unsafe { &mut *self.password.get() } = val
+        self.inner().password = val
     }
 }

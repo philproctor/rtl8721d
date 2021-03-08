@@ -9,6 +9,7 @@
 #![test_runner(crate::test_harness::runner)]
 #![feature(const_raw_ptr_deref)]
 #![feature(const_fn_fn_ptr_basics)]
+#![feature(str_split_once)]
 // #![reexport_test_harness_main = "test_main"]
 
 extern crate alloc;
@@ -29,6 +30,7 @@ mod executor;
 mod hal;
 mod tasks;
 mod util;
+mod parsers;
 
 use rtl8720_sys as ffi;
 
@@ -57,7 +59,7 @@ fn startup() {
     CONFIG.load().unwrap_or_default();
     LwipInterface::init(Some(debug_fn));
     WifiClient::init().unwrap_or_default();
-    WifiClient::connect_wpa2(CONFIG.get_ssid(), CONFIG.get_password()).unwrap();
+    WifiClient::connect_wpa2(CONFIG.get_ssid(), CONFIG.get_password()).unwrap_or_default();
     LwipInterface::dhcp(0);
     TIMER1.start_periodical(100); //the fn on this is effectively a no-op, but it helps keep the main loop going
     spawn!(command_prompt());

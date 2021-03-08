@@ -25,3 +25,4 @@ pub use alloc::{boxed::Box, format, string::String, vec, vec::Vec};
 
 pub use crate::device::*;
 pub use crate::config::CONFIG;
+pub use crate::error::*;
