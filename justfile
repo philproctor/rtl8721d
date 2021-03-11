@@ -70,3 +70,21 @@ pack-libs:
     echo -n extracting sdk to {{COMPLETE_SDK_DIR}}...
     cd "{{COMPLETE_SDK_DIR}}" && unzip ../sdk-complete.zip
     echo "{{TXT_OK}}"
+
+vue:
+    docker run --rm -it \
+        -v $PWD/web:/work \
+        -u 1000:1000 \
+        --net host \
+        -w /work \
+        --entrypoint '' \
+        $(docker build -q -f util/vue.dockerfile web/) yarn serve
+
+vue-shell:
+    docker run --rm -it \
+        -v $PWD/web:/work \
+        -u 1000:1000 \
+        --net host \
+        -w /work \
+        --entrypoint '' \
+        $(docker build -q -f util/vue.dockerfile web/) sh
