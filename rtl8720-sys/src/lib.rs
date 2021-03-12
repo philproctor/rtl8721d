@@ -4,9 +4,16 @@
 #![allow(non_snake_case)]
 #![allow(dead_code)]
 #![allow(safe_packed_borrows)]
-#![allow(improper_ctypes)]
+// #![allow(improper_ctypes)]
 
 pub mod bindings;
 pub mod ctypes;
 
 pub use bindings as c;
+
+// use core::panic::PanicInfo;
+
+// #[panic_handler]
+// fn panic(pi: &PanicInfo) -> ! {
+//     loop {}
+// }

@@ -1,35 +1,61 @@
 [build]
 target = "thumbv8m.main-none-eabihf"
 
-# [profile.dev]
-# panic = "abort"
+[profile.dev]
+panic = "abort"
 
-# [profile.release]
-# panic = "abort"
-# codegen-units = 1
-# lto = true
+[profile.release]
+panic = "abort"
+codegen-units = 1
+lto = true
 
-# [target.thumbv8m.main-none-eabihf]
+[target.thumbv8m.main-none-eabihf]
 # runner = "qemu-system-arm -cpu cortex-m4 -machine lm3s6965evb -nographic -semihosting-config enable=on,target=native -kernel"
-# linker = "target/toolchain/bin/arm-none-eabi-gcc"
-# rustflags = [
-#     "-C",
-#     "link-args=-Ltarget/toolchain/lib -Ltarget/sdk/hardware/variants/rtl8721d/linker_scripts/gcc -Ttarget/sdk/hardware/variants/rtl8721d/linker_scripts/gcc/rlx8721d_img2_is_arduino.ld",
-#     "-C",
-#     '''link-args=
-#         -O2 -march=armv8-m.main+dsp -mthumb -mcmse -mfloat-abi=hard -mfpu=fpv5-sp-d16 -nostartfiles -specs nosys.specs -Wl,--gc-sections
-#         -Wl,-Map=target/rtl8721d/bin/rtl8721d.map -Wl,--cref -Wl,--build-id=none -Wl,-wrap,strcat -Wl,-wrap,strchr -Wl,-wrap,strcmp
-#         -Wl,-wrap,strncmp -Wl,-wrap,strcpy -Wl,-wrap,strncpy -Wl,-wrap,strlen -Wl,-wrap,strnlen -Wl,-wrap,strncat -Wl,-wrap,strpbrk
-#         -Wl,-wrap,strstr -Wl,-wrap,strtok -Wl,-wrap,strsep -Wl,-wrap,strtoll -Wl,-wrap,strtoul -Wl,-wrap,strtoull -Wl,-wrap,atoi -Wl,-wrap,malloc
-#         -Wl,-wrap,free -Wl,-wrap,realloc -Wl,-wrap,memcmp -Wl,-wrap,memcpy -Wl,-wrap,memmove -Wl,-wrap,memset -Wl,--no-enum-size-warning -Wl,--warn-common
-#         -Wl,--allow-multiple-definition -o target/rtl8721d/bin/rtl8721d.axf
-#         target/lib-rtl8721d.a target/thumbv8m.main-none-eabihf/debug/librust8720.a -lm''',
-# ]
-
-
-# [target.thumbv8m.main-none-eabihf.links]
-# rustc-link-search = [
-#     "target/toolchain/lib/gcc/arm-none-eabi/6.5.0/",
-#     "target/toolchain/lib/gcc/",
-#     "target/toolchain/arm-none-eabi/lib/arm-none-eabi/6.5.0/",
-# ]
+linker = "./tools/toolchain/bin/arm-none-eabi-gcc"
+rustflags = [
+    "-C",
+    "link-args=-Ltools/toolchain/lib -Ltools/sdk/hardware/variants/rtl8721d/linker_scripts/gcc -Ttools/sdk/hardware/variants/rtl8721d/linker_scripts/gcc/rlx8721d_img2_is_arduino.ld",
+    "-C",
+    '''link-args=-O2 
+        -march=armv8-m.main+dsp
+        -mthumb
+        -mcmse
+        -mfloat-abi=hard
+        -mfpu=fpv5-sp-d16
+        -nostartfiles
+        -specs nosys.specs
+        -Wl,--gc-sections
+        -Wl,-Map=target/rtl8721d.map
+        -Wl,--cref
+        -Wl,--build-id=none
+        -Wl,-wrap,strcat
+        -Wl,-wrap,strchr
+        -Wl,-wrap,strcmp
+        -Wl,-wrap,strncmp
+        -Wl,-wrap,strcpy
+        -Wl,-wrap,strncpy
+        -Wl,-wrap,strlen
+        -Wl,-wrap,strnlen
+        -Wl,-wrap,strncat
+        -Wl,-wrap,strpbrk
+        -Wl,-wrap,strstr
+        -Wl,-wrap,strtok
+        -Wl,-wrap,strsep
+        -Wl,-wrap,strtoll
+        -Wl,-wrap,strtoul
+        -Wl,-wrap,strtoull
+        -Wl,-wrap,atoi
+        -Wl,-wrap,malloc
+        -Wl,-wrap,free
+        -Wl,-wrap,realloc
+        -Wl,-wrap,memcmp
+        -Wl,-wrap,memcpy
+        -Wl,-wrap,memmove
+        -Wl,-wrap,memset
+        -Wl,--no-enum-size-warning
+        -Wl,--warn-common
+        -Wl,--allow-multiple-definition
+        -o target/rtl8721d.axf
+        tools/lib-rtl8721d.a
+        -lm''',
+]

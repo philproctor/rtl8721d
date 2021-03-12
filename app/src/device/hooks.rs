@@ -22,3 +22,9 @@ fn panic(pi: &PanicInfo) -> ! {
 fn oom(_: Layout) -> ! {
     System::reset();
 }
+
+#[no_mangle]
+pub fn __aeabi_unwind_cpp_pr0() {}
+
+#[no_mangle]
+pub fn __aeabi_dcmple() {}

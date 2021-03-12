@@ -9,9 +9,11 @@ pub async fn http_server() {
 }
 
 minirouter! {
-    <RtlRouter>
-    content {
-        ("/" | "/index.html") => b"content".clone(),
-    },
-    api {}
+    struct RtlRouter {
+        content {
+            ("/" | "/index.html") => b"content".clone(),
+            // ("/cargo.toml") => *include_bytes!("../../Cargo.toml"),
+        },
+        api {}
+    }
 }

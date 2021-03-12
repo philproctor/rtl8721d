@@ -6,3 +6,6 @@ edition = "2018"
 workspace = "../"
 
 [dependencies]
+
+[build-dependencies]
+cc = "1.0"

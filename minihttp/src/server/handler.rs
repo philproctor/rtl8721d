@@ -9,10 +9,10 @@ pub trait HttpHandler {
 
 #[macro_export]
 macro_rules! minirouter {
-    (<$name:ident>
+    (struct $name:ident {
         content { $( ( $( $content_path:tt )* ) => $content:expr ,)* } ,
         api { $( ( $( $path:tt )* ) => $handler:expr ,)* }
-    ) => {
+    }) => {
         pub struct $name {}
 
         impl HttpHandler for $name {
