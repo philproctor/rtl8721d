@@ -1,5 +1,4 @@
 #include "ameba_soc.h"
-#include "ftl_int.h"
 #include "main.h"
 #if defined(__ICCARM__)
 #pragma section = ".image2.psram.bss"

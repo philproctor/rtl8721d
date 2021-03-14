@@ -9,3 +9,8 @@ workspace = "../"
 
 [build-dependencies]
 cc = "1.0"
+
+# [lib]
+# crate-type = ["lib"]
+# links = "rust8720"
+

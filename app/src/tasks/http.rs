@@ -11,9 +11,13 @@ pub async fn http_server() {
 minirouter! {
     struct RtlRouter {
         content {
-            ("/" | "/index.html") => b"content".clone(),
-            // ("/cargo.toml") => *include_bytes!("../../Cargo.toml"),
+            // ("/" | "/index.html") => *include_bytes!("../../content/index.html"),
+            // ("/js/app.js") => *include_bytes!("../../content/js/app.js"),
+            // ("/js/vendors.js") => *include_bytes!("../../content/js/vendors.js"),
+            // ("/css/app.css") => *include_bytes!("../../content/css/app.css"),
+            ("/css/vendors.css") => *include_bytes!("../../content/css/vendors.css"),
         },
         api {}
     }
 }
+

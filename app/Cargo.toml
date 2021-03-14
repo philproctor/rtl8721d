@@ -23,6 +23,9 @@ futures-lite = { version = "1.11", default-features = false, features = ["alloc"
 spin_on = "0.1"
 async-trait = "0.1"
 
+bare-io = { version = "0.2", features = ["nightly"] } # his looks like it's being renamed to "core2"
+
+
 [dev-dependencies]
 cortex-m = "0.7"
 cortex-m-rt = "0.6"

@@ -2,8 +2,6 @@
     util/bindgen.sh
 
 @build:
-    cargo build --workspace --exclude rust8720
-    ./util/pack-libs.sh
     cargo build
     util/assemble_image.sh
 

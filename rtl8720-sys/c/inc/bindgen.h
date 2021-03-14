@@ -16,12 +16,12 @@ extern int __builtin_arm_cmse_nonsecure_caller();
 #include <device_lock.h>
 
 #include <portmacro.h>
-#include "ftl_int.h"
-#include <psram_reserve.h>
+// #include "ftl_int.h"
+// #include <psram_reserve.h>
 
 #include <wifi_conf.h>
 
-#include <net_stack_intf.h>
+// #include <net_stack_intf.h>
 #include "lwip_netconf.h"
 #include <lwip/api.h>
 #include <lwip/sockets.h>

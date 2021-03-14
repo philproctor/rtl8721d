@@ -12,35 +12,35 @@
  */
 #define CONFIG_RTL8721D 1
 #define ARM_CORE_CM4 1
-#undef  CONFIG_FPGA
+#undef CONFIG_FPGA
 #define CONFIG_CHIP_A_CUT 1
-#undef  CONFIG_CHIP_B_CUT
+#undef CONFIG_CHIP_B_CUT
 
 /*
  * < CONFIG CPU CLK 
  */
 #define CONFIG_CPU_CLK 1
 #define CONFIG_CPU_200MHZ 1
-#undef  CONFIG_CPU_100MHZ
-#undef  CONFIG_CPU_50MHZ
-#undef  CONFIG_CPU_25MHZ
-#undef  CONFIG_CPU_XTAL
-#undef  CONFIG_FPGA_CLK
+#undef CONFIG_CPU_100MHZ
+#undef CONFIG_CPU_50MHZ
+#undef CONFIG_CPU_25MHZ
+#undef CONFIG_CPU_XTAL
+#undef CONFIG_FPGA_CLK
 #define PLATFORM_CLOCK (200000000)
 #define CPU_CLOCK_SEL_VALUE (0)
 
 /*
  * < CONFIG TEST MODE 
  */
-#undef  CONFIG_MP
-#undef  CONFIG_CP
-#undef  CONFIG_FT
-#undef  CONFIG_EQC
+#undef CONFIG_MP
+#undef CONFIG_CP
+#undef CONFIG_FT
+#undef CONFIG_EQC
 
 /*
  * < CONFIG TrustZone 
  */
-#undef  CONFIG_TRUSTZONE
+#undef CONFIG_TRUSTZONE
 
 /*
  * < CONFIG OS 
@@ -66,7 +66,7 @@
 /*
  * < CONFIG PINMUX 
  */
-#undef  CONFIG_PINMAP_ENABLE
+#undef CONFIG_PINMAP_ENABLE
 
 /*
  * < MBED_API 
@@ -76,33 +76,33 @@
 /*
  * < CONFIG FUNCTION TEST 
  */
-#undef  CONFIG_PER_TEST
+#undef CONFIG_PER_TEST
 
 /*
  * < CONFIG SECURE TEST 
  */
-#undef  CONFIG_SEC_VERIFY
+#undef CONFIG_SEC_VERIFY
 
 /*
  * < CONFIG BT 
  */
-#undef  CONFIG_BT_EN
-#undef  CONFIG_BT
-#undef  CONFIG_BT_PERIPHERAL
-#undef  CONFIG_BT_CENTRAL
-#undef  CONFIG_BT_SCATTERNET
-#undef  CONFIG_BT_BEACON
-#undef  CONFIG_BT_CONFIG
-#undef  CONFIG_BT_AIRSYNC_CONFIG
+#undef CONFIG_BT_EN
+#undef CONFIG_BT
+#undef CONFIG_BT_PERIPHERAL
+#undef CONFIG_BT_CENTRAL
+#undef CONFIG_BT_SCATTERNET
+#undef CONFIG_BT_BEACON
+#undef CONFIG_BT_CONFIG
+#undef CONFIG_BT_AIRSYNC_CONFIG
 
 /*
  * < CONFIG WIFI 
  */
 #define CONFIG_WIFI_EN 1
-#undef  CONFIG_HIGH_TP_TEST
-#undef  WIFI_PERFORMANCE_MONITOR
+#undef CONFIG_HIGH_TP_TEST
+#undef WIFI_PERFORMANCE_MONITOR
 #define CONFIG_WIFI_NORMAL 1
-#undef  CONFIG_WIFI_TEST
+#undef CONFIG_WIFI_TEST
 #define CONFIG_WIFI_MODULE 1
 
 /*
@@ -113,34 +113,34 @@
 /*
  * < CONFIG USB 
  */
-#undef  CONFIG_USB_OTG_EN
+#undef CONFIG_USB_OTG_EN
 
 /*
  * < SSL Config 
  */
 #define CONFIG_USE_MBEDTLS_ROM 1
 #define CONFIG_MBED_TLS_ENABLED 1
-#undef  CONFIG_SSL_ROM_TEST
+#undef CONFIG_SSL_ROM_TEST
 
 /*
  * < DuerOS Config 
  */
-#undef  CONFIG_BAIDU_DUER
+#undef CONFIG_BAIDU_DUER
 
 /*
  * < MQTT Config 
  */
-#undef  CONFIG_MQTT_EN
+#undef CONFIG_MQTT_EN
 
 /*
  * < GUI Config 
  */
-#undef  CONFIG_GUI_EN
+#undef CONFIG_GUI_EN
 
 /*
  * < Audio Config 
  */
-#undef  CONFIG_AUDIO_EN
+#undef CONFIG_AUDIO_EN
 
 /*
  * To set debug msg flag
@@ -151,6 +151,6 @@
  * < Build Option 
  */
 #define CONFIG_TOOLCHAIN_ASDK 1
-#undef  CONFIG_TOOLCHAIN_ARM_GCC
-#undef  CONFIG_LINK_ROM_LIB
+#undef CONFIG_TOOLCHAIN_ARM_GCC
+#undef CONFIG_LINK_ROM_LIB
 #define CONFIG_LINK_ROM_SYMB 1

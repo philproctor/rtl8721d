@@ -10,11 +10,10 @@ codegen-units = 1
 lto = true
 
 [target.thumbv8m.main-none-eabihf]
-# runner = "qemu-system-arm -cpu cortex-m4 -machine lm3s6965evb -nographic -semihosting-config enable=on,target=native -kernel"
-linker = "./tools/toolchain/bin/arm-none-eabi-gcc"
+linker = "arm-none-eabi-gcc"
 rustflags = [
     "-C",
-    "link-args=-Ltools/toolchain/lib -Ltools/sdk/hardware/variants/rtl8721d/linker_scripts/gcc -Ttools/sdk/hardware/variants/rtl8721d/linker_scripts/gcc/rlx8721d_img2_is_arduino.ld",
+    "link-args=-Ltools/sdk/hardware/variants/rtl8721d/linker_scripts/gcc -Ttools/sdk/hardware/variants/rtl8721d/linker_scripts/gcc/rlx8721d_img2_is_arduino.ld",
     "-C",
     '''link-args=-O2 
         -march=armv8-m.main+dsp
@@ -24,16 +23,13 @@ rustflags = [
         -mfpu=fpv5-sp-d16
         -nostartfiles
         -specs nosys.specs
-        -Wl,--gc-sections
-        -Wl,-Map=target/rtl8721d.map
-        -Wl,--cref
-        -Wl,--build-id=none
+        -specs nano.specs
+        -Wl,-wrap,printf
+        -Wl,-wrap,sprintf
         -Wl,-wrap,strcat
         -Wl,-wrap,strchr
         -Wl,-wrap,strcmp
         -Wl,-wrap,strncmp
-        -Wl,-wrap,strcpy
-        -Wl,-wrap,strncpy
         -Wl,-wrap,strlen
         -Wl,-wrap,strnlen
         -Wl,-wrap,strncat
@@ -45,17 +41,44 @@ rustflags = [
         -Wl,-wrap,strtoul
         -Wl,-wrap,strtoull
         -Wl,-wrap,atoi
-        -Wl,-wrap,malloc
-        -Wl,-wrap,free
-        -Wl,-wrap,realloc
-        -Wl,-wrap,memcmp
-        -Wl,-wrap,memcpy
-        -Wl,-wrap,memmove
+        -Wl,-wrap,strcpy
+        -Wl,-wrap,strncpy
         -Wl,-wrap,memset
-        -Wl,--no-enum-size-warning
-        -Wl,--warn-common
-        -Wl,--allow-multiple-definition
+        -Wl,-wrap,memcpy
+        -Wl,-wrap,memcmp
+        -Wl,-wrap,memmove
+        -Wl,-wrap,snprintf
+        -Wl,-wrap,malloc
+        -Wl,-wrap,realloc
+        -Wl,-wrap,free
+        -Wl,-Map=target/rtl8721d.map
         -o target/rtl8721d.axf
-        tools/lib-rtl8721d.a
-        -lm''',
+        -Wl,--start-group
+        tools/sdk/hardware/variants/rtl8721d/btgap.a
+        tools/sdk/hardware/variants/rtl8721d/lib_arduino.a
+        tools/sdk/hardware/variants/rtl8721d/lib_arduino_bt.a
+        tools/sdk/hardware/variants/rtl8721d/lib_arduino_mbedtls240.a
+        tools/sdk/hardware/variants/rtl8721d/lib_cmsis_dsp.a
+        tools/sdk/hardware/variants/rtl8721d/lib_coap.a
+        tools/sdk/hardware/variants/rtl8721d/lib_dct.a
+        tools/sdk/hardware/variants/rtl8721d/lib_eap.a
+        tools/sdk/hardware/variants/rtl8721d/lib_httpc.a
+        tools/sdk/hardware/variants/rtl8721d/lib_httpd.a
+        tools/sdk/hardware/variants/rtl8721d/lib_m4a_self.a
+        tools/sdk/hardware/variants/rtl8721d/lib_mdns.a
+        tools/sdk/hardware/variants/rtl8721d/lib_mmfv2.a
+        tools/sdk/hardware/variants/rtl8721d/lib_rtp_codec.a
+        tools/sdk/hardware/variants/rtl8721d/lib_rtsp.a
+        tools/sdk/hardware/variants/rtl8721d/lib_tftp.a
+        tools/sdk/hardware/variants/rtl8721d/lib_usbd.a
+        tools/sdk/hardware/variants/rtl8721d/lib_usbh.a
+        tools/sdk/hardware/variants/rtl8721d/lib_user.a
+        tools/sdk/hardware/variants/rtl8721d/lib_v4l2.a
+        tools/sdk/hardware/variants/rtl8721d/lib_websocket.a
+        tools/sdk/hardware/variants/rtl8721d/lib_wifi_fw.a
+        tools/sdk/hardware/variants/rtl8721d/lib_wifi_ucps_fw.a
+        tools/sdk/hardware/variants/rtl8721d/lib_wlan.a
+        tools/sdk/hardware/variants/rtl8721d/lib_wps.a
+        -Wl,--end-group
+        -lc_nano -lnosys -lm''',
 ]
